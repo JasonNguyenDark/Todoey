@@ -9,6 +9,8 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
     var itemArr = ["Option 1", "Option 2", "Option 3"]
+    
+    let defaults = UserDefaults.standard
 
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
@@ -17,6 +19,7 @@ class ToDoListViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             //print(textField.text)
             self.itemArr.append(textField.text!)
+            self.defaults.set(self.itemArr, forKey: "TodoListArray")
             self.tableView.reloadData()
         }
         alert.addTextField { (alertTextField) in
@@ -35,6 +38,10 @@ class ToDoListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArr = items
+        }
         // Do any additional setup after loading the view.
     }
 
